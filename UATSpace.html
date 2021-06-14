@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!--UATSpace page 
+written by: Timothy A. Ebert, Jr
+timebert@uat.edu
+16May2021-->
+<!-- The Race to Space
+The goal is to be the first to space. The only way to get to space is to play a game of Craps. 
+The only way to win the game is to roll two six side die and get doubles that are even numders. 
+If you roll a seven or eleven then you lose and will not be going to space. 
+But if you roll any other number to can roll again. The goal is to do this in the least amount of roll has you can. 
+You need to get to space to make repairs on a satellite to get communications back up and running.-->
+
+<html>
+
+<head>
+    <!--insert the style and text type-->
+    <link href="Style.css" rel="stylesheet" type="text/css" />
+    <!--setting the link to the javascript source page-->
+    <script src="code.js"></script>
+    <!--setting link to get the data from-->
+    <script src="dataLoader-1.js"></script>
+
+    <title>
+        <!--title should be set to Tim Ebert's UATSpace Page-->
+        Tim Ebert's UATSpace Page
+    </title>
+</head>
+
+<body>
+    <!--needed for the DOM-->
+    <script>
+        //create some need variadles
+        var theTime = new Date();
+        var tempTime = new Date();
+        var time_interval = 5000;
+        var last_iteration = 0;
+        var running = true;
+        var index = 0;
+        var timer;
+
+        //to getData for our table
+        var data = getDate();
+
+        //data from the dataloader() to our table
+        function updateDisplay() {
+            theTime = new Date();
+
+            //fill in the table
+            var timeRead = data[index].time_seconds;
+            if (timeRead >= 10) {
+                document.getElementById("data").rows["seconds"].innerHTML = dataRow("Time Elapsed", data[index].time_seconds, "seconds");
+                document.getElementById("data").rows["latitude"].innerHTML = dataRow("Latitude", data[index].latitude, " ");
+                document.getElementById("data").rows["Longltude"].innerHTML = dataRow("Longltude", data[index].longitude, " ");
+                document.getElementById("data").rows["GPS_Altitude"].innerHTML = dataRow("GPS Altitude", data[index].gps_altitude, " ");
+                document.getElementById("data").rows["bmpSensor_altitude"].innerHTML = dataRow("bmpSensor altitude", data[index].bmpSensor_altitude, " ");
+                document.getElementById("data").rows["bmpSensor_pressure"].innerHTML = dataRow("bmpSensor pressure", data[index].bmpSensor_pressure, " ");
+                document.getElementById("data").rows["bmpSensor_temperature"].innerHTML = dataRow("bmpSensor temperature", data[index].bmpSensor_temp, " ");
+                document.getElementById("data").rows["digitalSensor_temperature"].innerHTML = dataRow("digitalSensor temperature", data[index].digSensor_temp, " ");
+                document.getElementById("data").rows["cssSensor_temperature"].innerHTML = dataRow("cssSensor temperature", data[index].cssSensor_temp, " ");
+                document.getElementById("data").rows["cssSensor_eCO2"].innerHTML = dataRow("cssSensor eCO2", data[index].cssSensor_eCO2, " ");
+                document.getElementById("data").rows["cssSensor_TVOC"].innerHTML = dataRow("cssSensor TVOC", data[index].cssSensor_TVOC, " ");
+                document.getElementById("data").rows["UV"].innerHTML = dataRow("UV", data[index].UV, " ");
+                document.getElementById("data").rows["accelX"].innerHTML = dataRow("accelX", data[index].accelX, " ");
+                document.getElementById("data").rows["accelY"].innerHTML = dataRow("accelY", data[index].accelY, " ");
+                document.getElementById("data").rows["accelZ"].innerHTML = dataRow("accelZ", data[index].accelZ, " ");
+                document.getElementById("data").rows["magnetisX"].innerHTML = dataRow("magnetisX", data[index].magneticX, " ");
+                document.getElementById("data").rows["magneticY"].innerHTML = dataRow("magneticY", data[index].magneticY, " ");
+                document.getElementById("data").rows["magneticZ"].innerHTML = dataRow("magneticZ", data[index].magneticZ, " ");
+                document.getElementById("data").rows["gyroX"].innerHTML = dataRow("gyroX", data[index].gyroX, " ");
+                document.getElementById("data").rows["gyroY"].innerHTML = dataRow("gyroY", data[index].gyroY, " ");
+                document.getElementById("data").rows["gyroZ"].innerHTML = dataRow("gyroZ", data[index].gyroZ, " ");
+            }
+            if (index < 500) {
+                index++;
+            } else {
+                index = 0;
+            }
+        }
+    </script>
+
+    <!--Making a Table to hold h1 title and jpg-->
+    <table>
+        <td>
+            <!--insert UATspace logo-->
+            <img src="UATspaceLogo-2.jpg">
+        </td>
+        <td>
+            <!--Setting the head to read UAT Space Program-->
+            <h1>
+                UAT Space Program
+            </h1>
+        </td>
+        <!--setting up thr table layout-->
+    </table>
+    <table border="2" width="70%" id="data">
+        <!--setting up the borders for the table-->
+        <col style="width: 35%;">
+        <col style="width: 35%;">
+        <thead>
+            <tr style="font-family: fantasy">
+                <!--setting the table header-->
+                <th>Data Type</th>
+                <th>Reading</th>
+            </tr>
+        </thead>
+        <!--setting up the rows for the table and in putting the data-->
+        <tbody>
+            <tr id="seconds"></tr>
+            <tr id="latitude"></tr>
+            <tr id="Longltude"> </tr>
+            <tr id="GPS_Altitude"></tr>
+            <tr id="bmpSensor_altitude"></tr>
+            <tr id="bmpSensor_pressure"></tr>
+            <tr id="bmpSensor_temperature"></tr>
+            <tr id="digitalSensor_temperature"></tr>
+            <tr id="cssSensor_temperature"></tr>
+            <tr id="cssSensor_eCO2"></tr>
+            <tr id="cssSensor_TVOC"></tr>
+            <tr id="UV"></tr>
+            <tr id="accelX"></tr>
+            <tr id="accelY"></tr>
+            <tr id="accelZ"></tr>
+            <tr id=magnetisX></tr>
+            <tr id="magneticY"></tr>
+            <tr id="magneticZ"></tr>
+            <tr id="gyroX"></tr>
+            <tr id="gyroY"></tr>
+            <tr id="gyroZ"></tr>
+        </tbody>
+    </table>
+
+    <br>
+    <!--inserting Countdown Status paragraph-->
+    <p id="countdownTimer">Countdown Status...</p>
+    <!--inserting start button to start the countdown and stop buttons -->
+    <button class="button" id="startButton" onclick="start();">Start</button>
+    <button class="button" id="stopButton" onclick="stop();">Stop</button>
+    <br>
+    <br>
+    <!--inputing a button to be able to play sound-->
+    <button class="button" onclick="playStation();">Play Sound</button><br>
+
+    <!--checking the alert function-->
+    <script>
+        //we do not need alert anymore
+        //alert("Test of the Alert function");
+    </script>
+
+    <!--Space for the craps game-->
+    <br>
+    <br>
+    <!--inserting the die1Results-->
+    <div id="die1Results">die1 status...</div><br>
+    <!--inserting the die2Results-->
+    <div id="die2Results">die2 status...</div><br>
+    <!--inserting the sumResults-->
+    <div id="sumResults">sum status...</div><br>
+    <!--inserting the crapsResults-->
+    <div id="crapsResults">Craps game status...</div><br>
+    <!--inserting the button to playCraps-->
+    <button class="button" onclick="playCraps();">Play Craps</button>
+    <!--inserting a askgif or rolling dice-->
+    <iframe src="https://giphy.com/embed/5T0klia2LqiIPM87lt" width="180" height="180" frameBorder="0"
+        class="giphy-embed" allowFullScreen></iframe>
+    <p><a href="https://giphy.com/gifs/game-love-pink-5T0klia2LqiIPM87lt">via GIPHY</a></p>
+    <br>
+    <br>
+    <!--inserting buttons to the other pages-->
+    <button class="button" onclick="indexTrans();">Go to index</button>
+    <button class="button" onclick="odjTrans();"> Odjectives</button>
+    <button class="button" onclick="loginTrans();"> Login</button>
+</body>
+
+</html>

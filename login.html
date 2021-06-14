@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--insert the style and text type-->
+    <link href="Stylelogin.css" rel="stylesheet" type="text/css" />
+    <!--setting the link to the javascript source page-->
+    <script src="loginCode.js"></script>
+    <title>
+        <!--title should be set to UATSpace Login Page-->
+        UATSpace Login Page
+    </title>
+
+</head>
+
+<body>
+    <h1>
+        <!--Setting the head to read UAT Space Program-->
+        Welcome to the UATSpace login page, please log in.
+    </h1>
+    <!--inserting paragraph tags-->
+    <p id="loginStatus">
+        Status of login...
+    </p>
+    <!--inserting layout on what is needed to login-->
+    <form id="creditSubmit" onsubmit="return false">
+        First Name: <input type="text" id="fName" /><br>
+        Last Name: <input type="text" id="lName" /><br>
+        Badge Number: <input type="number" id="badgeID" /><br>
+        <input type="submit" onclick="checkCreds();" />
+    </form>
+
+</body>
+
+</html>
